@@ -60,6 +60,11 @@
 			<artifactId>spring-boot-starter-test</artifactId>
 			<scope>test</scope>
 		</dependency>
+		<dependency>
+			<groupId>org.springframework.security</groupId>
+			<artifactId>spring-security-core</artifactId><!-- Or any other version compatible with your Spring Boot version -->
+		</dependency>
+
 	</dependencies>
 
 	<build>
