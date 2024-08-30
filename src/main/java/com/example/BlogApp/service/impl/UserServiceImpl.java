@@ -8,6 +8,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.net.PasswordAuthentication;
+import java.util.List;
 
 @Service
 public class UserServiceImpl implements UserService {
@@ -21,7 +22,6 @@ public class UserServiceImpl implements UserService {
     @Override
     public User saveUser(User user) {
         return userRepository.save(user);
-
     }
 
     @Override
@@ -33,10 +33,17 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    public List<User> retrieveUsers() {
+        return (userRepository.findAll()!=null) ? userRepository.findAll():null ;
+    }
+
+    @Override
     public boolean authenticateUser(String userName, String password) {
             User user = userRepository.findByUserName(userName).orElse(null);
             if(user!=null&& passwordEncoder.matches(password, user.getUserName()))
                 return true;
             return false;
     }
+
+
 }

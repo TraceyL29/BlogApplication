@@ -4,12 +4,13 @@ import com.example.BlogApp.model.User;
 import com.example.BlogApp.service.impl.UserServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.*;
 
-@RestController
+import java.util.List;
+
+@Controller
 public class LoginController {
 
     @Autowired
@@ -36,5 +37,14 @@ public class LoginController {
             return ResponseEntity.status(401).body("Register unsuccessful!");
         }
     }
+
+    @GetMapping("/retrieve")
+    public  void retrieveAll(Model model){
+        List<User> allUsers = userService.retrieveUsers();
+            model.addAttribute("allUsers", allUsers);
+            // In a real application, you would generate a token or session here
+    }
+
+
 
 }
