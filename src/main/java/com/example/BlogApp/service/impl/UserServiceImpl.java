@@ -34,9 +34,9 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public List<User> retrieveUsers() {
-        return (userRepository.findAll()!=null) ? userRepository.findAll():null ;
+        return (userRepository.findAll()!=null) ? userRepository.findAll():null;
     }
-
+//dont need this method
     @Override
     public boolean authenticateUser(String userName, String password) {
             User user = userRepository.findByUserName(userName).orElse(null);
