@@ -1,8 +1,10 @@
 package com.example.BlogApp.controller;
 
+import com.example.BlogApp.model.LoginResponse;
 import com.example.BlogApp.model.User;
 import com.example.BlogApp.service.impl.UserServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -16,14 +18,24 @@ public class LoginController {
     @Autowired
     private UserServiceImpl userService;
 
+    @GetMapping("/login")
+    public String showLoginPage(Model model) {
+        model.addAttribute("userName", "a");
+        model.addAttribute("password", "password");
+        return "login"; // This will look for login.html in the templates folder (for Thymeleaf) or static folder (for plain HTML)
+    }
+
     @PostMapping("/login")
-    public ResponseEntity<String> login(@RequestParam String username, @RequestParam String password) {
-        Boolean authenticatedUser = userService.authenticateUser(username, password);
+    public ResponseEntity<Object> login(@RequestBody User user) {
+        Boolean authenticatedUser = userService.authenticateUser(user.getUserName(), user.getPassword());
         if (authenticatedUser) {
-            // In a real application, you would generate a token or session here
-            return ResponseEntity.ok("Login successful!");
+            // Create a response object with status and message
+            LoginResponse response = new LoginResponse("Login successful!", HttpStatus.OK.value());
+            return ResponseEntity.ok(response);
         } else {
-            return ResponseEntity.status(401).body("Invalid username or password");
+            LoginResponse response = new LoginResponse("Login unsuccessful!", HttpStatus.UNAUTHORIZED.value());
+            // Create a response object with status and message
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(response);
         }
     }
 
@@ -39,10 +51,8 @@ public class LoginController {
     }
 
     @GetMapping("/retrieve")
-    public  void retrieveAll(Model model){
-        List<User> allUsers = userService.retrieveUsers();
-            model.addAttribute("allUsers", allUsers);
-            // In a real application, you would generate a token or session here
+    public  List<User> retrieveAll(){
+        return userService.retrieveUsers();
     }
 
 
