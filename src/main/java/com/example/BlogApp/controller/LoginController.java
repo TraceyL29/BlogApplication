@@ -12,32 +12,23 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
-@Controller
+@RestController
 public class LoginController {
 
     @Autowired
     private UserServiceImpl userService;
 
     @GetMapping("/login")
-    public String showLoginPage(Model model) {
-        model.addAttribute("userName", "a");
-        model.addAttribute("password", "password");
+    public String login() {
         return "login"; // This will look for login.html in the templates folder (for Thymeleaf) or static folder (for plain HTML)
     }
 
-    @PostMapping("/login")
-    public ResponseEntity<Object> login(@RequestBody User user) {
-        Boolean authenticatedUser = userService.authenticateUser(user.getUserName(), user.getPassword());
-        if (authenticatedUser) {
-            // Create a response object with status and message
-            LoginResponse response = new LoginResponse("Login successful!", HttpStatus.OK.value());
-            return ResponseEntity.ok(response);
-        } else {
-            LoginResponse response = new LoginResponse("Login unsuccessful!", HttpStatus.UNAUTHORIZED.value());
-            // Create a response object with status and message
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(response);
-        }
+    @PostMapping("/perform_login")
+    public ResponseEntity<String> performLogin() {
+        // Authentication logic here
+        return ResponseEntity.ok("Login successful");
     }
+
 
     @PostMapping("/register")
     public ResponseEntity<String> register(@RequestBody User user){
@@ -54,7 +45,6 @@ public class LoginController {
     public  List<User> retrieveAll(){
         return userService.retrieveUsers();
     }
-
 
 
 }
