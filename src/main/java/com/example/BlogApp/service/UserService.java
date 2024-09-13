@@ -8,5 +8,4 @@ public interface UserService  {
     User saveUser(User user);
     User updateUser(User user);
     List<User> retrieveUsers();
-    boolean authenticateUser(String userName, String password);
 }

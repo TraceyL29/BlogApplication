@@ -3,6 +3,7 @@ package com.example.BlogApp.service.impl;
 import com.example.BlogApp.model.User;
 import com.example.BlogApp.repository.UserRepository;
 import com.example.BlogApp.service.UserService;
+import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -20,11 +21,14 @@ public class UserServiceImpl implements UserService {
 
 
     @Override
+    @Transactional
     public User saveUser(User user) {
+        user.setPassword(user.getPassword());
         return userRepository.save(user);
     }
 
     @Override
+    @Transactional
     public User updateUser(User user) {
         if(userRepository.existsById(user.getId())){
             return userRepository.save(user);
@@ -36,14 +40,7 @@ public class UserServiceImpl implements UserService {
     public List<User> retrieveUsers() {
         return (userRepository.findAll()!=null) ? userRepository.findAll():null;
     }
-//dont need this method
-    @Override
-    public boolean authenticateUser(String userName, String password) {
-            User user = userRepository.findByUserName(userName).orElse(null);
-            if(user!=null&& passwordEncoder.matches(password, user.getUserName()))
-                return true;
-            return false;
-    }
+
 
 
 }
