@@ -24,6 +24,7 @@ public class UserServiceImpl implements UserService {
         return userRepository.save(user);
     }
 
+
     @Override
     public User updateUser(User user) {
         if(userRepository.existsById(user.getId())){
