@@ -24,7 +24,8 @@ public class LoginController {
     }
 
     @PostMapping("/perform_login")
-    public ResponseEntity<String> performLogin() {
+    public ResponseEntity<String> performLogin(   @RequestParam String username,
+                                                  @RequestParam String password) {
         // Authentication logic here
         return ResponseEntity.ok("Login successful");
     }

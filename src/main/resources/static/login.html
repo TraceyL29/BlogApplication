@@ -110,7 +110,7 @@
             <div className="login-container">
                 <form className="form-signin" onSubmit={handleSubmitForm}>
                 <h2 className="form-signin-heading">Login</h2>
-                    <div className="form-gro
+                    <div className="form-group">
                         <input type="text" id="userName" className="form-control" placeholder="Username" value={userName}  onChange={(e) => setUserName(e.target.value)} required />
                     </div>
                     <div className="form-group">
@@ -124,12 +124,36 @@
     };
 
     const Register = ({ onSwitchToLogin }) => {
+        const [userName, setUserName] = useState('');
+        const [password, setPassword] = useState('');
+        const handleRegisterForm = async (event) => {
+           event.preventDefault();
+            try {
+                const response = await fetch("/register", {
+                    method: "POST",
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({ userName, password })
+                });
+
+                if (response.ok) {
+                    alert('Register successful!');
+                } else {
+                    alert('Register unsuccessful!');
+                }
+            } catch (error) {
+                console.error('Error during Register:', error);
+                alert('An error occurred during Register.');
+            }
+            }
+
         return (
             <div className="register-container">
-                <form className="form-signin">
+                <form className="form-signin" onSubmit={handleRegisterForm}>
                 <h2 className="form-signin-heading">Register</h2>
                     <div className="form-group">
-                        <input type="email" id="email" className="form-control" placeholder="Username" required />
+                        <input type="text" id="userName" className="form-control" placeholder="Username" required />
                     </div>
                     <div className="form-group">
                         <input type="password" id="password" className="form-control" placeholder="Password"  required />
